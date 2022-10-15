@@ -14,12 +14,17 @@ int main(void)
 		putchar((num % 10) + '0');
 		if (num == 9)
 			continue;
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> e2b79bc2fef7753cd760232523d7398024b36732
 		putchar(',');
 		putchar(' ');
 	}
 
 	putchar('\n');
+
 	return (0);
 }
 
