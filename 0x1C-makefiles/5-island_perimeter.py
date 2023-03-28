@@ -1,68 +1,31 @@
 #!/usr/bin/python3
+"""Module that calculates the perimeter of an island in a grid."""
 
-Args:
-grid (list[list[int]]): A rectangular grid with integers representing land and water zones.
 
-Returns:
-int: The perimeter of the island.
+def num_water_neighbors(grid, i, j):
+    """Returns the number of water neighbors a cell has in a grid."""
 
-Raises:
-ValueError: If the grid is invalid or contains more than one island.
+    num = 0
 
-"""
-rows = len(grid)
-cols = len(grid[0])
+    if i <= 0 or not grid[i - 1][j]:
+        num += 1
+    if j <= 0 or not grid[i][j - 1]:
+        num += 1
+    if j >= len(grid[i]) - 1 or not grid[i][j + 1]:
+        num += 1
+    if i >= len(grid) - 1 or not grid[i + 1][j]:
+        num += 1
 
-# check if the grid is valid
-if rows < 1 or rows > 100 or cols < 1 or cols > 100:
-    raise ValueError("Invalid grid size")
+    return num
 
-# find the first land cell
-found_land = False
-for i in range(rows):
-    for j in range(cols):
-        if grid[i][j] == 1:
-            found_land = True
-            start_cell = (i, j)
-            break
-    if found_land:
-        break
 
-# check if there is more than one island
-visited = set()
-queue = [start_cell]
-while queue:
-    curr_cell = queue.pop(0)
-    if curr_cell in visited:
-        continue
-    visited.add(curr_cell)
-    i, j = curr_cell
-    if grid[i][j] == 0:
-        continue
-    if i > 0:
-        queue.append((i-1, j))
-    if i < rows-1:
-        queue.append((i+1, j))
-    if j > 0:
-        queue.append((i, j-1))
-    if j < cols-1:
-        queue.append((i, j+1))
+def island_perimeter(grid):
+    """Returns the perimeter of the island in grid."""
 
-if len(visited) != sum(row.count(1) for row in grid):
-    raise ValueError("More than one island")
+    perimeter = 0
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            if grid[i][j]:
+                perimeter += num_water_neighbors(grid, i, j)
 
-# count the perimeter of the island
-perimeter = 0
-for i in range(rows):
-    for j in range(cols):
-        if grid[i][j] == 1:
-            if i == 0 or grid[i-1][j] == 0:
-                perimeter += 1
-            if i == rows-1 or grid[i+1][j] == 0:
-                perimeter += 1
-            if j == 0 or grid[i][j-1] == 0:
-                perimeter += 1
-            if j == cols-1 or grid[i][j+1] == 0:
-                perimeter += 1
-
-return perimeter
+    return perimeter
